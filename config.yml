@@ -1,0 +1,43 @@
+security:
+  # Username and password to access the web management interface
+  username: somebody
+  password: password
+
+doctrine:
+  mapping:
+    default:
+      paths: [ '%app.root_dir%/src/Entity', '%app.root_dir%/src/Plugin' ]
+      namespace: Terramar
+
+  database:
+    # Any Doctrine driver
+    driver: pdo_mysql
+
+    # Options
+    # path: %app.root_dir%/database.sqlite
+    host: mysql
+    user: root
+    password: some_password
+    dbname: packages
+
+packages:
+  # Defines the name used in the page titles and landing page.
+  name:     'Example Company'
+
+  # If set, the homepage will be linked to from the landing page.
+  homepage:      'https://www.example.com'
+
+  # If set, the contact email is displayed on the landing page.
+  contact_email: 'john.doe@example.de'
+
+  # Needs to be set to generate a dist archive
+  base_path:     'https://localhost'
+  archive:       true
+  secure_satis:  false
+
+  resque:
+    # Redis server host.
+    host:     'redis://redis'
+    port:     ~
+    database: 4
+

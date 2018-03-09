@@ -1,0 +1,40 @@
+version: '3.3'
+services:
+  php:
+    image: packages
+    build: .
+    volumes:
+      - ./config.yml:/app/config.yml
+      - ./dist:/app/web/dist
+    ports:
+      - 80:8080
+    networks:
+      - default
+
+  rescue:
+    image: packages
+    command: bin/console resque:worker:start
+    volumes:
+      - ./config.yml:/app/config.yml
+      - ./dist:/app/web/dist
+    networks:
+      - default
+
+  mysql:
+    image: mariadb:10.3
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: some_password
+      MYSQL_DATABASE: packages
+    networks:
+      - default
+
+  redis:
+    image: redis:3.2
+    ports:
+      - 6379:6379
+    networks:
+      - default
+
+networks:
+  default:
