@@ -16,11 +16,14 @@ COPY --from=debian /app/composer.json /app/composer.json
 RUN composer update --ignore-platform-reqs --no-scripts
 
 #### Main Image ####
-FROM php:5.6-alpine
+FROM php:7.1-alpine
 
 # Copy results of packages installation and composer vendors
 COPY --from=debian /app /app
 COPY --from=composer /app/vendor /app/vendor
+
+# Install mysql driver
+RUN docker-php-ext-install pdo_mysql
 
 # Permissions for default user
 RUN chown -R 1000:1000 /app
@@ -32,4 +35,4 @@ WORKDIR /app
 USER 1000:1000
 
 # Run simple php server
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "web"]
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "web", "-d", "date.timezone=Europe/Berlin"]
